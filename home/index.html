@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orçamento</title>
+
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="icon" type="image.jpeg" href="/Imagens/icone.jpeg">
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Orçamento de Esquadrias Em Alumínio</h1>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Pesquisar..." onkeyup="filtrarItens()">
+            </div>
+    </div>
+
+    <div class="grid">
+        <div class="item" data-peca="janela1" data-imagem="../Imagens/janela1.png"
+             onclick="abrirPopup('janela1')">
+            <img src="../Imagens/janela1.png"> <p>Janela 2 Folhas</p>
+        </div>
+
+        <div class="item" data-peca="porta1" data-imagem="../Imagens/portacorrer1.png"
+             onclick="abrirPopup('porta1')">
+            <img src="../Imagens/portacorrer1.png"> <p>Porta de Correr</p>
+        </div>
+
+        <div class="item" data-peca="janelaveneziana" data-imagem="../Imagens/janelaveneziana.png"
+             onclick="abrirPopup('janelaveneziana')">
+            <img src="../Imagens/janelaveneziana.png"> <p>Janela Veneziana</p>
+        </div>
+
+        <div class="item" data-peca="vitro" data-imagem="../Imagens/vitro.png"
+             onclick="abrirPopup('vitro')">
+            <img src="../Imagens/vitro.png"> <p>Vitro Maxim-Ar</p>
+        </div>
+
+        <div class="item" data-peca="janelaPersiana" data-imagem="../Imagens/janelaPersiana.png"
+             onclick="abrirPopup('janelaPersiana')">
+            <img src="../Imagens/janelaPersiana.png"> <p>Janela Persiana</p>
+        </div>
+
+        <div class="item" data-peca="janelaAbrir" data-imagem="../Imagens/janelaAbrir.png"
+             onclick="abrirPopup('janelaAbrir')">
+            <img src="../Imagens/janelaAbrir.png"> <p>Janela de Abrir</p>
+        </div>
+
+        <div class="item" data-peca="janelaGuilhotina" data-imagem="../Imagens/janelaGuilhotina.png"
+             onclick="abrirPopup('janelaGuilhotina')">
+            <img src="../Imagens/janelaGuilhotina.png"> <p>Janela Guilhotina</p>
+        </div>
+
+        <div class="item" data-peca="vitroBasculante" data-imagem="../Imagens/vitroBasculante.png"
+             onclick="abrirPopup('vitroBasculante')">
+            <img src="../Imagens/vitroBasculante.png"> <p>Vitro Basculante</p>
+        </div>
+    </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+
+            <span class="close" onclick="closePopup()">×</span>
+
+            <img id="popup-img" src="" class="popup-img">
+
+            <h2 id="titulo-popup"></h2>
+
+            <label for="altura">Altura (H)</label>
+            <input type="number" id="altura">
+
+            <label for="largura">Largura (L)</label>
+            <input type="number" id="largura">
+
+            <button onclick="calcular()">Calcular Orçamento</button>
+
+            <p id="resultado"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script> 
+
+</body>
+</html>

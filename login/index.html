@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <link rel="icon" type="image.jpeg" href="/Imagens/icone.jpeg">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="login-container">
+
+        <div class="login-card" id="loginCard">
+            <h2>Entrar</h2>
+
+            <form id="loginForm">
+                <div class="input-box">
+                    <label>Email</label>
+                    <input type="email" id="email" required placeholder="Digite seu email">
+                </div>
+
+                <div class="input-box">
+                    <label>Senha</label>
+                    <input type="password" id="password" required placeholder="Digite sua senha">
+                </div>
+
+                <button type="submit" class="btn-login">Entrar</button>
+            </form>
+
+            <p class="register-text">
+                Não tem conta? <a href="#" id="showRegister">Criar conta</a>
+            </p>
+        </div>
+        
+        <div class="login-card hidden" id="registerCard">
+            <h2>Criar Conta</h2>
+
+            <form id="registerForm">
+                <div class="input-box">
+                    <label>Nome</label>
+                    <input type="text" id="regName" required placeholder="Seu nome completo">
+                </div>
+                
+                <div class="input-box">
+                    <label>Email</label>
+                    <input type="email" id="regEmail" required placeholder="Digite seu email">
+                </div>
+                
+                <div class="input-box">
+                    <label>Confirmar Email</label>
+                    <input type="email" id="regConfirmEmail" required placeholder="Confirme seu email">
+                </div>
+
+                <div class="input-box">
+                    <label>Senha</label>
+                    <input type="password" id="regPassword" required placeholder="Crie sua senha">
+                </div>
+
+                <button type="submit" class="btn-login">Cadastrar</button>
+            </form>
+
+            <p class="register-text">
+                Já tem conta? <a href="#" id="showLogin">Fazer login</a>
+            </p>
+        </div>
+        
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
