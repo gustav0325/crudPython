@@ -21,7 +21,6 @@ function abrirPopup(peca){
 
     if (peca === "janela1") titulo.innerText = "Janela 2 Folhas";
     if (peca === "porta1") titulo.innerText = "Porta de Correr";
-    if (peca === "janela1") titulo.innerText = "Janela 2 Folhas";
     if (peca === "janelaveneziana") titulo.innerText = "Janela Veneziana";
     if (peca === "vitro") titulo.innerText = "Vitro Maxim-Ar";
     if (peca === "janelaPersiana") titulo.innerText = "Janela Persiana";
@@ -53,10 +52,14 @@ function calcular(){
         return;
     }
 
-    const area = altura * largura;
+    const alturaM = altura / 100;
+    const larguraM = largura / 100;
+    
+    const area = alturaM * larguraM;
     const valorMetro = valoresMetro[pecaSelecionada];
     const total = area * valorMetro;
 
     resultado.innerText =
         `Área: ${area.toFixed(2)} m²\nTotal: R$ ${total.toFixed(2)}`;
 }
+
