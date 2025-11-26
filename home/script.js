@@ -29,7 +29,6 @@ function logout() {
     window.location.href = "../login/index.html";
 }
 
-// Verificar autenticação ao carregar página
 if (!checkAuth()) {
     throw new Error('Não autenticado');
 }

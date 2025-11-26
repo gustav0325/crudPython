@@ -4,10 +4,8 @@ from werkzeug.security import generate_password_hash
 
 def init_database():
     with app.app_context():
-        # Criar todas as tabelas
         db.create_all()
         
-        # Criar usuário admin padrão se não existir
         admin = User.query.filter_by(email='admin@gmail.com').first()
         if not admin:
             admin = User(

@@ -30,7 +30,7 @@ class Orcamento(db.Model):
     total = db.Column(db.Float, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
-    user = db.relationship('User', backref='orcamentos')
+    user = db.relationship('User', backref=db.backref('orcamentos', cascade='all, delete-orphan'))
 
     def to_dict(self):
         return {

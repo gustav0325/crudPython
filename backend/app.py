@@ -15,7 +15,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 CORS(app)
 
-# Decorator para validar token
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -40,7 +39,6 @@ def token_required(f):
     
     return decorated
 
-# Rotas de autenticação
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -86,7 +84,7 @@ def login():
         'user': user.to_dict()
     }), 200
 
-# CRUD de usuários
+
 @app.route('/api/users', methods=['GET'])
 @token_required
 def get_users(current_user):
@@ -129,18 +127,20 @@ def update_user(current_user, user_id):
 @app.route('/api/users/<int:user_id>', methods=['DELETE'])
 @token_required
 def delete_user(current_user, user_id):
-    if current_user.id != user_id:
+    if current_user.id != user_id and current_user.id != 1:
         return jsonify({'message': 'Não autorizado'}), 403
     
     user = User.query.get(user_id)
     if not user:
         return jsonify({'message': 'Usuário não encontrado'}), 404
     
+    Orcamento.query.filter_by(user_id=user_id).delete()
+    
     db.session.delete(user)
     db.session.commit()
     return jsonify({'message': 'Usuário deletado'}), 200
 
-# CRUD de orçamentos
+
 @app.route('/api/orcamentos', methods=['POST'])
 @token_required
 def create_orcamento(current_user):
