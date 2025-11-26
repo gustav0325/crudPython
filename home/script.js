@@ -1,3 +1,5 @@
+const API_URL = '/api';
+
 const valoresMetro = {
     janela1: 150,
     porta1: 220,
@@ -10,6 +12,27 @@ const valoresMetro = {
 };
 
 let pecaSelecionada = "";
+
+function checkAuth() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert("Você precisa fazer login primeiro!");
+        window.location.href = "../login/index.html";
+        return false;
+    }
+    return true;
+}
+
+function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = "../login/index.html";
+}
+
+// Verificar autenticação ao carregar página
+if (!checkAuth()) {
+    throw new Error('Não autenticado');
+}
 
 function abrirPopup(peca){
     pecaSelecionada = peca;
@@ -42,7 +65,7 @@ function closePopup(){
     document.getElementById("popup").classList.remove("active");
 }
 
-function calcular(){
+async function calcular(){
     const altura = parseFloat(document.getElementById("altura").value);
     const largura = parseFloat(document.getElementById("largura").value);
     const resultado = document.getElementById("resultado");
@@ -59,7 +82,48 @@ function calcular(){
     const valorMetro = valoresMetro[pecaSelecionada];
     const total = area * valorMetro;
 
-    resultado.innerText =
-        `Área: ${area.toFixed(2)} m²\nTotal: R$ ${total.toFixed(2)}`;
+    // Obter nome da peça
+    const titulo = document.getElementById("titulo-popup").innerText;
+
+    // Salvar orçamento na API
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/orcamentos`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                peca: titulo,
+                altura: altura,
+                largura: largura,
+                area: area,
+                total: total
+            })
+        });
+
+        if (response.ok) {
+            resultado.innerText = `Área: ${area.toFixed(2)} m²\nTotal: R$ ${total.toFixed(2)}\n\n✅ Orçamento salvo!`;
+        } else {
+            resultado.innerText = `Área: ${area.toFixed(2)} m²\nTotal: R$ ${total.toFixed(2)}\n\n⚠️ Erro ao salvar`;
+        }
+    } catch (error) {
+        console.error('Erro ao salvar orçamento:', error);
+        resultado.innerText = `Área: ${area.toFixed(2)} m²\nTotal: R$ ${total.toFixed(2)}\n\n⚠️ Erro ao salvar`;
+    }
 }
 
+function filtrarItens() {
+    const searchInput = document.getElementById('search-input').value.toLowerCase();
+    const items = document.querySelectorAll('.item');
+    
+    items.forEach(item => {
+        const text = item.querySelector('p').textContent.toLowerCase();
+        if (text.includes(searchInput)) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}

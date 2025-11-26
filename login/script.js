@@ -1,3 +1,5 @@
+const API_URL = '/api';
+
 const loginCard = document.getElementById('loginCard');
 const registerCard = document.getElementById('registerCard');
 const loginForm = document.getElementById('loginForm');
@@ -19,7 +21,7 @@ showLoginLink.addEventListener('click', function(e) {
 });
 
 
-loginForm.addEventListener("submit", function (e) {
+loginForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const email = document.getElementById("email").value.trim();
@@ -30,16 +32,33 @@ loginForm.addEventListener("submit", function (e) {
         return;
     }
 
-    if (email === "admin@gmail.com" && password === "123") {
-        alert("Login realizado com sucesso!");
-        window.location.href = "../index.html";
-    } else {
-        alert("Email ou senha incorretos!");
+    try {
+        const response = await fetch(`${API_URL}/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
+            alert("Login realizado com sucesso!");
+            window.location.href = "../home/index.html";
+        } else {
+            alert(data.message || "Email ou senha incorretos!");
+        }
+    } catch (error) {
+        console.error('Erro ao fazer login:', error);
+        alert("Erro ao conectar com o servidor. Tente novamente.");
     }
 });
 
 
-registerForm.addEventListener("submit", function (e) {
+registerForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const name = document.getElementById("regName").value.trim();
@@ -62,10 +81,27 @@ registerForm.addEventListener("submit", function (e) {
         return;
     }
 
-    alert(`Cadastro realizado com sucesso para ${name}! Você pode fazer login agora.`);
-    
-    registerForm.reset();
-    
-    loginCard.classList.remove('hidden');
-    registerCard.classList.add('hidden');
+    try {
+        const response = await fetch(`${API_URL}/register`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name, email, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            alert(`Cadastro realizado com sucesso para ${name}! Você pode fazer login agora.`);
+            registerForm.reset();
+            loginCard.classList.remove('hidden');
+            registerCard.classList.add('hidden');
+        } else {
+            alert(data.message || "Erro ao cadastrar usuário.");
+        }
+    } catch (error) {
+        console.error('Erro ao cadastrar:', error);
+        alert("Erro ao conectar com o servidor. Tente novamente.");
+    }
 });

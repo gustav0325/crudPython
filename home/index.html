@@ -14,9 +14,15 @@
 
     <div class="header">
         <h1>Orçamento de Esquadrias Em Alumínio</h1>
-        <div class="search-container">
-            <input type="text" id="search-input" placeholder="Pesquisar..." onkeyup="filtrarItens()">
+        <div class="header-actions">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Pesquisar..." onkeyup="filtrarItens()">
             </div>
+            <div class="user-actions">
+                <a href="../historico/index.html" class="btn-historico">📋 Histórico</a>
+                <button onclick="logout()" class="btn-logout">🚪 Sair</button>
+            </div>
+        </div>
     </div>
 
     <div class="grid">

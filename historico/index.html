@@ -12,7 +12,13 @@
 
     <div class="container">
 
-        <h1>Histórico de Orçamentos</h1>
+        <div class="header-historico">
+            <h1>Histórico de Orçamentos</h1>
+            <div class="actions">
+                <a href="../home/index.html" class="btn-voltar">← Voltar</a>
+                <button onclick="logout()" class="btn-logout">🚪 Sair</button>
+            </div>
+        </div>
 
         <table id="tabelaOrcamentos">
             <thead>
@@ -31,10 +37,6 @@
             </tbody>
 
         </table>
-
-        <p class="voltar">
-            <a href="/home/index.html">Voltar</a>
-        </p>
 
     </div>
 
