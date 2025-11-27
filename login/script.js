@@ -46,7 +46,6 @@ loginForm.addEventListener("submit", async function (e) {
         if (response.ok) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
-            alert("Login realizado com sucesso!");
             window.location.href = "../home/index.html";
         } else {
             alert(data.message || "Email ou senha incorretos!");

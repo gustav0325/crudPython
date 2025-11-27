@@ -19,7 +19,7 @@ if (!checkAuth()) {
 }
 
 async function carregarHistorico() {
-    lista.innerHTML = '<tr><td colspan="7">Carregando...</td></tr>';
+    lista.innerHTML = '<tr><td colspan="9">Carregando...</td></tr>';
 
     try {
         const token = localStorage.getItem('token');
@@ -40,7 +40,7 @@ async function carregarHistorico() {
         if (orcamentos.length === 0) {
             lista.innerHTML = `
                 <tr>
-                    <td colspan="7">Nenhum orçamento registrado ainda.</td>
+                    <td colspan="9">Nenhum orçamento registrado ainda.</td>
                 </tr>
             `;
             return;
@@ -50,6 +50,8 @@ async function carregarHistorico() {
             const linha = document.createElement("tr");
 
             linha.innerHTML = `
+                <td>${item.cliente_nome || 'N/A'}</td>
+                <td>${item.cliente_telefone || 'N/A'}</td>
                 <td>${item.peca}</td>
                 <td>${item.altura} cm</td>
                 <td>${item.largura} cm</td>
@@ -67,7 +69,7 @@ async function carregarHistorico() {
         console.error('Erro ao carregar histórico:', error);
         lista.innerHTML = `
             <tr>
-                <td colspan="7">Erro ao carregar histórico. Tente novamente.</td>
+                <td colspan="9">Erro ao carregar histórico. Tente novamente.</td>
             </tr>
         `;
     }
@@ -95,6 +97,12 @@ async function remover(id) {
         console.error('Erro ao excluir:', error);
         alert("Erro ao conectar com o servidor.");
     }
+}
+
+function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.href = "../login/index.html";
 }
 
 carregarHistorico();

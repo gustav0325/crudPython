@@ -5,7 +5,7 @@ import jwt
 import datetime
 import os
 from functools import wraps
-from models import db, User, Orcamento
+from models import db, User, Orcamento, Cliente
 
 app = Flask(__name__, static_folder='static')
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
@@ -146,11 +146,16 @@ def delete_user(current_user, user_id):
 def create_orcamento(current_user):
     data = request.get_json()
     
-    if not data or not all(k in data for k in ['peca', 'altura', 'largura', 'area', 'total']):
+    if not data or not all(k in data for k in ['cliente_id', 'peca', 'altura', 'largura', 'area', 'total']):
         return jsonify({'message': 'Dados incompletos'}), 400
+    
+    cliente = Cliente.query.get(data['cliente_id'])
+    if not cliente:
+        return jsonify({'message': 'Cliente não encontrado'}), 404
     
     orcamento = Orcamento(
         user_id=current_user.id,
+        cliente_id=data['cliente_id'],
         peca=data['peca'],
         altura=data['altura'],
         largura=data['largura'],
@@ -182,6 +187,76 @@ def delete_orcamento(current_user, orc_id):
     db.session.delete(orcamento)
     db.session.commit()
     return jsonify({'message': 'Orçamento deletado'}), 200
+
+
+# CRUD de Clientes
+@app.route('/api/clientes', methods=['POST'])
+@token_required
+def create_cliente(current_user):
+    data = request.get_json()
+    
+    if not data or not data.get('nome') or not data.get('telefone'):
+        return jsonify({'message': 'Dados incompletos'}), 400
+    
+    cliente = Cliente(
+        nome=data['nome'],
+        telefone=data['telefone'],
+        endereco=data.get('endereco', '')
+    )
+    
+    db.session.add(cliente)
+    db.session.commit()
+    
+    return jsonify({'message': 'Cliente criado', 'cliente': cliente.to_dict()}), 201
+
+@app.route('/api/clientes', methods=['GET'])
+@token_required
+def get_clientes(current_user):
+    clientes = Cliente.query.order_by(Cliente.nome).all()
+    return jsonify([cliente.to_dict() for cliente in clientes]), 200
+
+@app.route('/api/clientes/<int:cliente_id>', methods=['GET'])
+@token_required
+def get_cliente(current_user, cliente_id):
+    cliente = Cliente.query.get(cliente_id)
+    if not cliente:
+        return jsonify({'message': 'Cliente não encontrado'}), 404
+    return jsonify(cliente.to_dict()), 200
+
+@app.route('/api/clientes/<int:cliente_id>', methods=['PUT'])
+@token_required
+def update_cliente(current_user, cliente_id):
+    data = request.get_json()
+    cliente = Cliente.query.get(cliente_id)
+    
+    if not cliente:
+        return jsonify({'message': 'Cliente não encontrado'}), 404
+    
+    if data.get('nome'):
+        cliente.nome = data['nome']
+    if data.get('telefone'):
+        cliente.telefone = data['telefone']
+    if 'endereco' in data:
+        cliente.endereco = data['endereco']
+    
+    db.session.commit()
+    return jsonify({'message': 'Cliente atualizado', 'cliente': cliente.to_dict()}), 200
+
+@app.route('/api/clientes/<int:cliente_id>', methods=['DELETE'])
+@token_required
+def delete_cliente(current_user, cliente_id):
+    cliente = Cliente.query.get(cliente_id)
+    if not cliente:
+        return jsonify({'message': 'Cliente não encontrado'}), 404
+    
+    # Verificar se há orçamentos vinculados
+    if cliente.orcamentos:
+        return jsonify({'message': 'Não é possível deletar cliente com orçamentos vinculados'}), 400
+    
+    db.session.delete(cliente)
+    db.session.commit()
+    return jsonify({'message': 'Cliente deletado'}), 200
+
 
 @app.route('/api/health', methods=['GET'])
 def health():

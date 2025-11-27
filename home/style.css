@@ -15,6 +15,46 @@
     font-weight: 700;
 }
 
+.header-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-historico, .btn-logout {
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.2s;
+}
+
+.btn-historico {
+    background: #0078ff;
+    color: #fff;
+}
+
+.btn-historico:hover {
+    background: #0056b3;
+}
+
+.btn-logout {
+    background: #dc3545;
+    color: #fff;
+}
+
+.btn-logout:hover {
+    background: #c82333;
+}
+
 .search-container {
     width: clamp(280px, 90%, 960px);
     margin: 15px auto 30px auto; 
@@ -78,6 +118,14 @@
 
 .popup.active{ right:0; }
 
+#modal-cliente {
+  z-index: 1000;
+}
+
+#modal-cliente.active {
+  right: 0;
+}
+
 .popup-content{
   position:relative;
   padding:22px;
@@ -108,14 +156,39 @@ label{ display:block;
     font-weight:600; 
 }
 
-input{ width:100%; 
+input, select{ width:100%; 
     padding:8px; 
     border:1px solid #ccc; 
     border-radius:6px; 
-    margin-bottom:6px; 
+    margin-bottom:6px;
+    font-size:14px;
 }
 
-button[onclick="calcular()"]{ width:100%; 
+select {
+    cursor: pointer;
+}
+
+.btn-novo-cliente {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    background: #28a745;
+    color: #fff;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.btn-novo-cliente:hover {
+    background: #218838;
+}
+
+button[onclick="calcular()"], 
+button[type="button"][onclick="calcular()"] { 
+    width:100%; 
     padding:10px; 
     margin-top:12px; 
     background:#0078ff; 
@@ -123,6 +196,30 @@ button[onclick="calcular()"]{ width:100%;
     border:0; 
     border-radius:6px; 
     cursor:pointer;
+    transition: background 0.2s;
+}
+
+button[onclick="calcular()"]:hover,
+button[type="button"][onclick="calcular()"]:hover {
+    background: #0056b3;
+}
+
+button[onclick="salvarCliente()"],
+button[type="button"][onclick="salvarCliente()"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 12px;
+    background: #28a745;
+    color: #fff;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+button[onclick="salvarCliente()"]:hover,
+button[type="button"][onclick="salvarCliente()"]:hover {
+    background: #218838;
 }
 
 #resultado {
