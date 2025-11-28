@@ -102,7 +102,7 @@ def get_user(current_user, user_id):
 @app.route('/api/users/<int:user_id>', methods=['PUT'])
 @token_required
 def update_user(current_user, user_id):
-    if current_user.id != user_id:
+    if current_user.id != user_id and current_user.id != 1:
         return jsonify({'message': 'Não autorizado'}), 403
     
     data = request.get_json()
@@ -145,7 +145,7 @@ def delete_user(current_user, user_id):
 @token_required
 def create_orcamento(current_user):
     data = request.get_json()
-    
+
     if not data or not all(k in data for k in ['cliente_id', 'peca', 'altura', 'largura', 'area', 'total']):
         return jsonify({'message': 'Dados incompletos'}), 400
     
